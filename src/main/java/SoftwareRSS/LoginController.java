@@ -15,12 +15,13 @@ import java.io.IOException;
  */
 public class LoginController
 {
+    static final private String loginUrl = "";
 
     @FXML
-    public TextField usernameField;
+    private TextField usernameField;
 
     @FXML
-    public PasswordField passwordField;
+    private PasswordField passwordField;
 
     static private Stage _loginStage;
 
@@ -54,5 +55,10 @@ public class LoginController
     static public void showLoginWindow()
     {
         _loginStage.show();
+    }
+
+    private String sendLoginRequest()
+    {
+        return (HttpHandler.sendPost(loginUrl, "username", usernameField.getText(), "password", passwordField.getText()));
     }
 }
