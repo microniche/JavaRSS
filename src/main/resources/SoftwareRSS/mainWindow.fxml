@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -22,7 +23,23 @@
                <children>
                   <ListView fx:id="articlesView" layoutX="63.0" layoutY="51.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children></AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="365.0" prefWidth="75.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="365.0">
+               <children>
+                  <HBox prefHeight="33.0" prefWidth="185.0" AnchorPane.bottomAnchor="332.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <TextField fx:id="rssField" HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#addRss">
+                           <graphic>
+                              <ImageView pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@413-rss2.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children></AnchorPane>
         </items>
          <VBox.margin>
             <Insets />

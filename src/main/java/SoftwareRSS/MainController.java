@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -28,7 +25,11 @@ public class MainController
     @FXML
     private ListView articlesView;
 
+    @FXML
+    private TextField rssField;
+
     private VBox layout = null;
+    static private String token = null;
 
     public MainController()
     {
@@ -45,14 +46,7 @@ public class MainController
                     return new CustomListCell();
                 }
             });
-            Article[] articleArray = new Article[]
-                    {
-                            new Article("titre nul", "description boaf", "link foireux"),
-                            new Article("titre moyen", "description nulle", "link moisi"),
-                            new Article("titre trop cool", "description amazing", "link qui pue")
-                    };
-            ObservableList testList = FXCollections.observableArrayList(articleArray);
-            articlesView.setItems(new ObservableListWrapper(testList));
+            updateArticles();
         }
         catch (IOException e)
         {
@@ -60,16 +54,45 @@ public class MainController
         }
     }
 
+    private void updateArticles()
+    {
+        Article[] articleArray = new Article[]
+                {
+                        new Article("titre nul", "description boaf", "link foireux"),
+                        new Article("titre moyen", "description nulle", "link moisi"),
+                        new Article("titre trop cool", "description amazing", "link qui pue")
+                };
+        ObservableList testList = FXCollections.observableArrayList(articleArray);
+        articlesView.setItems(new ObservableListWrapper(testList));
+    }
+
     @FXML
     private void loginOrLogout()
     {
+        if (token == null)
+            LoginController.showLoginWindow();
+        else
+        {
+            token = null;
+            updateLogTexts("You are not logged in", "Login");
+        }
+    }
 
+    static public void setToken(String token)
+    {
+        MainController.token = token;
     }
 
     public void updateLogTexts(String labelText, String buttonText)
     {
         logLabel.setText(labelText);
         logButton.setText(buttonText);
+    }
+
+    @FXML
+    private void addRss()
+    {
+        System.out.println(rssField.getText());
     }
 
     public VBox getLayout()

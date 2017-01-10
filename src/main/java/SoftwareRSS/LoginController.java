@@ -43,13 +43,18 @@ public class LoginController
         }
     }
 
+    // The connection should provide a token to authenticate
+
     @FXML
-    private boolean login()
+    private void login()
     {
         System.out.println("prout");
+        if (true) // appel de sendLoginRequest ne retourne pas null
+        {
+            MainController.setToken("token");
+            Main.mainController.updateLogTexts("Bienvenue " + "pseudo", "Logout");
+        }
         _loginStage.hide();
-        Main.mainController.updateLogTexts("wesh gros", "prout");
-        return (false);
     }
 
     static public void showLoginWindow()
