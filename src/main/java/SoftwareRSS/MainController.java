@@ -26,6 +26,9 @@ public class MainController
     private ListView articlesView;
 
     @FXML
+    private ListView rssStreamView;
+
+    @FXML
     private TextField rssField;
 
     private VBox layout = null;
@@ -43,10 +46,17 @@ public class MainController
             articlesView.setCellFactory(new Callback<ListView<Article>, ListCell>() {
                 @Override
                 public ListCell call(ListView param) {
-                    return new CustomListCell();
+                    return new CustomArticleListCell();
+                }
+            });
+            rssStreamView.setCellFactory(new Callback<ListView<RssStream>, ListCell>() {
+                @Override
+                public ListCell call(ListView param) {
+                    return new CustomRssStreamListCell();
                 }
             });
             updateArticles();
+            updateRssStreams();
         }
         catch (IOException e)
         {
@@ -58,12 +68,26 @@ public class MainController
     {
         Article[] articleArray = new Article[]
                 {
-                        new Article("titre nul", "description boaf", "link foireux"),
+                    new Article("titre nul", "description boaf", "link foireux"),
                         new Article("titre moyen", "description nulle", "link moisi"),
-                        new Article("titre trop cool", "description amazing", "link qui pue")
+                        new Article("titre trop cool", "description amazing", "link qui pue"),
+                        new Article("gegzeg", "description amabfdsbzing", "link quidfbsbsdb pue"),
+                        new Article("gsdgbdfhdfhfd", "description amfsdbsazing", "link qusbdbfsi pue"),
+                        new Article("bfdsbbsdb", "description amazibfdbbsbbfng", "link qudfsbsdbi pue")
                 };
         ObservableList testList = FXCollections.observableArrayList(articleArray);
-        articlesView.setItems(new ObservableListWrapper(testList));
+        articlesView.setItems(testList);
+    }
+
+    private void updateRssStreams()
+    {
+        RssStream[] rssStreamsArray = new RssStream[]
+                {
+                    new RssStream("Flux toutes les actualités - 01net", "http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/", "http://static.bfmtv.com/ressources/img/logo/logo-01net-gris.png"),
+                        new RssStream("Le Monde.fr - Actualités et Infos en France et dans le monde", "http://www.lemonde.fr/rss/une.xml", "http://www.lemonde.fr/mmpub/img/lgo/lemondefr_rss.gif")
+                };
+        ObservableList testList = FXCollections.observableArrayList(rssStreamsArray);
+        rssStreamView.setItems(testList);
     }
 
     @FXML
