@@ -1,6 +1,5 @@
 package SoftwareRSS;
 
-import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,7 +25,7 @@ public class MainController
     private ListView articlesView;
 
     @FXML
-    private ListView rssStreamView;
+    private ListView rssFeedsView;
 
     @FXML
     private TextField rssField;
@@ -49,14 +48,14 @@ public class MainController
                     return new CustomArticleListCell();
                 }
             });
-            rssStreamView.setCellFactory(new Callback<ListView<RssStream>, ListCell>() {
+            rssFeedsView.setCellFactory(new Callback<ListView<RssFeed>, ListCell>() {
                 @Override
                 public ListCell call(ListView param) {
-                    return new CustomRssStreamListCell();
+                    return new CustomRssFeedListCell();
                 }
             });
             updateArticles();
-            updateRssStreams();
+            updateRssFeeds();
         }
         catch (IOException e)
         {
@@ -79,15 +78,15 @@ public class MainController
         articlesView.setItems(testList);
     }
 
-    private void updateRssStreams()
+    private void updateRssFeeds()
     {
-        RssStream[] rssStreamsArray = new RssStream[]
+        RssFeed[] rssFeedsArray = new RssFeed[]
                 {
-                    new RssStream("Flux toutes les actualités - 01net", "http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/", "http://static.bfmtv.com/ressources/img/logo/logo-01net-gris.png"),
-                        new RssStream("Le Monde.fr - Actualités et Infos en France et dans le monde", "http://www.lemonde.fr/rss/une.xml", "http://www.lemonde.fr/mmpub/img/lgo/lemondefr_rss.gif")
+                    new RssFeed("Flux toutes les actualités - 01net", "http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/", "http://static.bfmtv.com/ressources/img/logo/logo-01net-gris.png"),
+                        new RssFeed("Le Monde.fr - Actualités et Infos en France et dans le monde", "http://www.lemonde.fr/rss/une.xml", "http://www.lemonde.fr/mmpub/img/lgo/lemondefr_rss.gif")
                 };
-        ObservableList testList = FXCollections.observableArrayList(rssStreamsArray);
-        rssStreamView.setItems(testList);
+        ObservableList testList = FXCollections.observableArrayList(rssFeedsArray);
+        rssFeedsView.setItems(testList);
     }
 
     @FXML

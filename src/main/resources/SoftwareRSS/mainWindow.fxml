@@ -41,7 +41,7 @@
                               </Button>
                            </children>
                         </HBox>
-                        <ListView fx:id="rssStreamView" />
+                        <ListView fx:id="rssFeedsView" />
                      </children>
                   </VBox>
                </children></AnchorPane>
