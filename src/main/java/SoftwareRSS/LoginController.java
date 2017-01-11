@@ -3,12 +3,14 @@ package SoftwareRSS;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Aurélien on 08/01/2017.
@@ -23,8 +25,11 @@ public class LoginController
     @FXML
     private PasswordField passwordField;
 
-    static private Stage _loginStage;
+    @FXML
+    private CheckBox rememberCheckBox;
 
+    static private Stage _loginStage;
+    static final private String credentialsFilePath = "credentials";
     public LoginController(Stage primaryStage)
     {
         _loginStage = new Stage();
@@ -48,17 +53,37 @@ public class LoginController
     @FXML
     private void login()
     {
-        System.out.println("prout");
         if (true) // appel de sendLoginRequest ne retourne pas null
         {
             MainController.setToken("token");
-            Main.mainController.updateLogTexts("Bienvenue " + "pseudo", "Logout");
+            Main.mainController.updateLogTexts("Bienvenue " + usernameField.getText(), "Logout");
+            if (rememberCheckBox.isSelected())
+                FileHandler.clearAndWriteLines(credentialsFilePath, usernameField.getText(), passwordField.getText());
+            else
+                FileHandler.removeFile(credentialsFilePath);
+            usernameField.clear();
+            passwordField.clear();
+            _loginStage.hide(); // we hide the window only if the connection succeed
         }
-        _loginStage.hide();
+    }
+
+    public void fillFields(String username, String password)
+    {
+        usernameField.setText(username);
+        passwordField.setText(password);
+        rememberCheckBox.setSelected(true);
     }
 
     static public void showLoginWindow()
     {
+        List<String> credentials = FileHandler.readLines(credentialsFilePath);
+        if (credentials != null)
+        {
+            if (credentials.size() != 2) //invalid file
+                FileHandler.removeFile(credentialsFilePath);
+            else
+                Main.loginController.fillFields(credentials.get(0), credentials.get(1));
+        }
         _loginStage.show();
     }
 
