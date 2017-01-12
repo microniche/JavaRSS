@@ -82,8 +82,9 @@ public class MainController
     {
         RssFeed[] rssFeedsArray = new RssFeed[]
                 {
-                    new RssFeed("Flux toutes les actualités - 01net", "http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/", "http://static.bfmtv.com/ressources/img/logo/logo-01net-gris.png"),
-                        new RssFeed("Le Monde.fr - Actualités et Infos en France et dans le monde", "http://www.lemonde.fr/rss/une.xml", "http://www.lemonde.fr/mmpub/img/lgo/lemondefr_rss.gif")
+                    new RssFeed("Flux toutes les actualités - 01net", "http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/"),
+                        new RssFeed("Le Monde.fr - Actualités et Infos en France et dans le monde", "http://www.lemonde.fr/rss/une.xml"),
+                        new RssFeed("Liberation - A la une sur Libération", "http://rss.liberation.fr/rss/latest/")
                 };
         ObservableList testList = FXCollections.observableArrayList(rssFeedsArray);
         rssFeedsView.setItems(testList);

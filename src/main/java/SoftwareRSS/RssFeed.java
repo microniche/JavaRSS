@@ -6,13 +6,11 @@ package SoftwareRSS;
 public class RssFeed {
     private String _title;
     private String _link;
-    private String _imageUrl;
 
-    public RssFeed(String title, String link, String imageUrl)
+    public RssFeed(String title, String link)
     {
         _title = title;
         _link = link;
-        _imageUrl = imageUrl;
     }
 
     public String getTitle()
@@ -23,10 +21,5 @@ public class RssFeed {
     public String getLink()
     {
         return (_link);
-    }
-
-    public String getImageUrl()
-    {
-        return (_imageUrl);
     }
 }
