@@ -54,8 +54,6 @@ public class MainController
                     return new CustomRssFeedListCell();
                 }
             });
-            updateArticles();
-            updateRssFeeds();
         }
         catch (IOException e)
         {
@@ -63,7 +61,7 @@ public class MainController
         }
     }
 
-    private void updateArticles()
+    public void updateArticles()
     {
         Article[] articleArray = new Article[]
                 {
@@ -78,7 +76,7 @@ public class MainController
         articlesView.setItems(testList);
     }
 
-    private void updateRssFeeds()
+    public void updateRssFeeds()
     {
         RssFeed[] rssFeedsArray = new RssFeed[]
                 {

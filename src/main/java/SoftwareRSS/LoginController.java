@@ -63,6 +63,8 @@ public class LoginController
                 FileHandler.removeFile(credentialsFilePath);
             usernameField.clear();
             passwordField.clear();
+            Main.mainController.updateRssFeeds();
+            Main.mainController.updateArticles();
             _loginStage.hide(); // we hide the window only if the connection succeed
         }
     }
