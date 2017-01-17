@@ -33,6 +33,8 @@ public class MainController
     private VBox layout = null;
     static private String token = null;
 
+    private ObservableList rssList = null;
+
     public MainController()
     {
         FXMLLoader loader = new FXMLLoader();
@@ -78,14 +80,19 @@ public class MainController
 
     public void updateRssFeeds()
     {
-        RssFeed[] rssFeedsArray = new RssFeed[]
+        RssFeed[] testRssFeedsArray = new RssFeed[]
                 {
                     new RssFeed("Flux toutes les actualités - 01net", "http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/"),
                         new RssFeed("Le Monde.fr - Actualités et Infos en France et dans le monde", "http://www.lemonde.fr/rss/une.xml"),
                         new RssFeed("Liberation - A la une sur Libération", "http://rss.liberation.fr/rss/latest/")
                 };
-        ObservableList testList = FXCollections.observableArrayList(rssFeedsArray);
-        rssFeedsView.setItems(testList);
+        rssList = FXCollections.observableArrayList(testRssFeedsArray);
+        rssFeedsView.setItems(rssList);
+    }
+
+    public void removeOneFeed(RssFeed feed)
+    {
+        rssList.remove(feed);
     }
 
     @FXML

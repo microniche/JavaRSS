@@ -18,6 +18,7 @@ import java.util.List;
 public class LoginController
 {
     static final private String loginUrl = "";
+    static final private String registerUrl = "http://www.google.fr/";
 
     @FXML
     private TextField usernameField;
@@ -92,5 +93,11 @@ public class LoginController
     private String sendLoginRequest()
     {
         return (HttpHandler.sendPost(loginUrl, "username", usernameField.getText(), "password", passwordField.getText()));
+    }
+
+    @FXML
+    public void showRegisterPage()
+    {
+        Main.hostServices.showDocument(registerUrl);
     }
 }
