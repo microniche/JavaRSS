@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -16,7 +17,7 @@ public class HttpHandler {
     {
         try {
             URL obj = new URL(url);
-            HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
             con.setRequestMethod("POST");
 
@@ -42,7 +43,10 @@ public class HttpHandler {
                 response.append(inputLine);
             }
             in.close();
-
+            if (con.getHeaderField("Set-Cookie") == null)
+                System.out.println("No cookie");
+            else
+                System.out.println("Cookie = " + con.getHeaderField("Set-Cookie"));
             return (response.toString());
         }
         catch (IOException e)
