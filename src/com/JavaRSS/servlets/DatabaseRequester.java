@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 public class DatabaseRequester
 {
 	private Connection connexion = null;
-	private Statement statement = null;
 	private ResultSet result = null;
+	private Statement statement = null;
 	private String url = "jdbc:mysql://localhost:3306/bdd_rss";
 	private String utilisateur = "root";
 	private String motDePasse = "root";
@@ -53,6 +53,36 @@ public class DatabaseRequester
 	}
 
 	
+	public List<String> addFeed(HttpServletRequest request)
+	{
+		this.connect();
+		
+		try
+		{
+			statement = connexion.createStatement();
+			int statut = statement.executeUpdate("INSERT INTO feeds (url, user_id) VALUES ('http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/', 4242)");
+//			result = statement.executeQuery( "INSERT INTO users id, mail, pwd FROM users;" );			
+//		      while ( result.next() ) {
+//		            int idUtilisateur = result.getInt( "id" );
+//		            String emailUtilisateur = result.getString( "mail" );
+//		            String motDePasseUtilisateur = result.getString( "pwd" );
+//		            messages.add( "Données retournées par la requête : id = " + idUtilisateur + ", email = " + emailUtilisateur
+//		                    + ", motdepasse = "
+//		                    + motDePasseUtilisateur);
+//		      }
+			messages.add("resultat de la requete" + statut);
+		      statement.close();
+		      statement = null;
+		}
+		catch ( SQLException ignore ) {
+			System.out.println("Error INSERT");
+        }
+
+		
+		return messages;
+	}
+	
+	
 	public List<String> toLogin(HttpServletRequest request)
 	{
 		this.connect();
@@ -78,6 +108,7 @@ public class DatabaseRequester
         }
 
 		System.out.println("Return Messages");
+		this.disconnect();
 		return messages;
 	}
 
