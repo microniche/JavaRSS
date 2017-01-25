@@ -17,7 +17,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -31,18 +30,16 @@ public class Index extends HttpServlet {
 public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
 		
 	URL url = new URL("http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/");
-	File file = new File("tmp");
 	List<String> messages = new ArrayList<String>();
 	DatabaseRequester dbr = new DatabaseRequester();
-	
-	FileUtils.copyURLToFile(url, file);
+
 	
 	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder dBuilder;
 	try
 	{
 		dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse(file);
+		Document doc = dBuilder.parse(url.openStream());
 		doc.getDocumentElement().normalize();
 
 		NodeList channel = doc.getElementsByTagName("channel");
@@ -52,7 +49,7 @@ public void doGet( HttpServletRequest request, HttpServletResponse response ) th
 		messages.add("Flux RSS Added from url");
 		messages.add("Title :" + element.getElementsByTagName("title").item(0).getTextContent());
 		System.out.println("\nCurrent Element : " + node.getNodeName());
-		messages = dbr.addFeed(request);
+		//messages = dbr.addFeed(request);
 
 		NodeList nList = doc.getElementsByTagName("item");
 
@@ -65,7 +62,7 @@ public void doGet( HttpServletRequest request, HttpServletResponse response ) th
 	
 	
 	
-    request.setAttribute( ATT_MESSAGES, messages );
+    //request.setAttribute( ATT_MESSAGES, messages );
     for (int i = 0; i < messages.size(); i++) {
     	response.getWriter().println(messages.get(i));
     }

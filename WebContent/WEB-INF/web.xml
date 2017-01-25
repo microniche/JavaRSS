@@ -57,4 +57,13 @@
 	<servlet-name>Register</servlet-name>
 	<url-pattern>/register</url-pattern>
 </servlet-mapping>
+
+<servlet>
+	<servlet-name>CheckLogged</servlet-name>
+	<servlet-class>com.JavaRSS.servlets.CheckLogged</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>CheckLogged</servlet-name>
+	<url-pattern>/check</url-pattern>
+</servlet-mapping>
 </web-app>
