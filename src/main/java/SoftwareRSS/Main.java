@@ -26,7 +26,6 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         LoginController.showLoginWindow();
-        System.out.println(HttpHandler.sendPost("http://localhost/BruteForceMyMind/web/app_dev.php/login", "nickname", "test", "password", "testtest"));
     }
 
 

@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class LoginController
 {
-    static final private String loginUrl = "";
-    static final private String registerUrl = "http://www.google.fr/";
+    static final private String loginUrl = "http://localhost:8080/ServeurJavaRSS/login";
+    static final private String registerUrl = "http://localhost:8080/ServeurJavaRSS/register";
 
     @FXML
     private TextField usernameField;
@@ -54,9 +54,11 @@ public class LoginController
     @FXML
     private void login()
     {
-        if (true) // appel de sendLoginRequest ne retourne pas null
+        if (sendLoginRequest().equals("ok")) // appel de sendLoginRequest ne retourne pas null
         {
-            MainController.setToken("token");
+            if (HttpHandler.previousSetCookie != null)
+                HttpHandler.cookiesToProvide = HttpHandler.previousSetCookie;
+            /*MainController.setToken("token");
             Main.mainController.updateLogTexts("Bienvenue " + usernameField.getText(), "Logout");
             if (rememberCheckBox.isSelected())
                 FileHandler.clearAndWriteLines(credentialsFilePath, usernameField.getText(), passwordField.getText());
@@ -65,8 +67,9 @@ public class LoginController
             usernameField.clear();
             passwordField.clear();
             Main.mainController.updateRssFeeds();
-            Main.mainController.updateArticles();
+            Main.mainController.updateArticles();*/
             _loginStage.hide(); // we hide the window only if the connection succeed
+            checkLogged();
         }
     }
 
@@ -92,7 +95,12 @@ public class LoginController
 
     private String sendLoginRequest()
     {
-        return (HttpHandler.sendPost(loginUrl, "username", usernameField.getText(), "password", passwordField.getText()));
+        return (HttpHandler.sendPost(loginUrl, "mail", usernameField.getText(), "password", passwordField.getText()));
+    }
+
+    private void checkLogged()
+    {
+        System.out.println("Return of check logged : " + HttpHandler.sendGet("http://localhost:8080/ServeurJavaRSS/check"));
     }
 
     @FXML
