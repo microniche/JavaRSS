@@ -20,7 +20,7 @@ public class DatabaseRequester
 	private Statement statement = null;
 	private String url = "jdbc:mysql://localhost:3306/bdd_rss";
 	private String utilisateur = "root";
-	private String motDePasse = null;//"root";
+	private String motDePasse = "root";
 	private List<String> messages = new ArrayList<String>();
 
 	public void connect()
