@@ -15,6 +15,17 @@ import java.net.URL;
 public class HttpHandler {
     static public String cookiesToProvide = null;
     static public String previousSetCookie = null;
+
+    static private void setCookies(HttpURLConnection con)
+    {
+        if (cookiesToProvide != null)
+            for (String cookie : cookiesToProvide.split(";"))
+            {
+                con.addRequestProperty("Cookie", cookie.trim());
+                System.out.println(cookie);
+            }
+    }
+
     static public String sendPost(String url, String... params)
     {
         try {
@@ -22,12 +33,7 @@ public class HttpHandler {
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
             con.setRequestMethod("POST");
-            if (cookiesToProvide != null)
-                for (String cookie : cookiesToProvide.split(";"))
-                {
-                    con.addRequestProperty("Cookie", cookie.trim());
-                    System.out.println(cookie);
-                }
+            setCookies(con);
             String urlParameters = params[0] + '=' + params[1]; // fail if there is no params but there should be
             for (int i = 2; i < params.length; i = i + 2)
             {
@@ -76,12 +82,7 @@ public class HttpHandler {
 
             con.setRequestMethod("GET");
 
-            if (cookiesToProvide != null)
-                for (String cookie : cookiesToProvide.split(";"))
-                {
-                    con.addRequestProperty("Cookie", cookie.trim());
-                    System.out.println(cookie);
-                }
+            setCookies(con);
 
             int responseCode = con.getResponseCode();
 
@@ -110,5 +111,15 @@ public class HttpHandler {
             e.printStackTrace();
         }
         return (null);
+    }
+
+    static public String sendGet(String url, String... params)
+    {
+        String urlParameters = params[0] + '=' + params[1]; // fail if there is no params but there should be
+        for (int i = 2; i < params.length; i = i + 2)
+        {
+            urlParameters += '&' + params[i] + '=' + params[i + 1];
+        }
+        return (sendGet(url + '?' + urlParameters));
     }
 }
