@@ -1,8 +1,9 @@
 package com.JavaRSS.Beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Article {
+public class Article implements Serializable{
 	private int id;
 	private int ownerRss;
 	private int ownerUser;

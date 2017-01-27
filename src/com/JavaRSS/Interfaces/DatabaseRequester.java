@@ -105,7 +105,7 @@ public class DatabaseRequester
 		return (false);
 	}
 	
-	public List<Article> getArticlesFromRss(int ownerRss)
+	public List<Article> getArticlesFromRss(int ownerRss, int ownerUser)
 	{
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -113,8 +113,9 @@ public class DatabaseRequester
 		try
 		{
 			connection = DriverManager.getConnection(url, utilisateur, motDePasse);
-			statement = connection.prepareStatement("SELECT * FROM article WHERE rss_id = ?");
+			statement = connection.prepareStatement("SELECT * FROM article WHERE rss_id = ? AND user_id = ?");
 			statement.setInt(1, ownerRss);
+			statement.setInt(2, ownerUser);
 			ResultSet result = statement.executeQuery();
 			List<Article> list = new LinkedList<Article>();
 			while (result.next())
@@ -163,7 +164,7 @@ public class DatabaseRequester
 		return (null);
 	}
 	
-	public List<Article> getArticlesFromLastUpdate(Date lastUpdate)
+	public List<Article> getArticlesFromLastUpdate(Date lastUpdate, int ownerUser)
 	{
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -171,8 +172,9 @@ public class DatabaseRequester
 		try
 		{
 			connection = DriverManager.getConnection(url, utilisateur, motDePasse);
-			statement = connection.prepareStatement("SELECT * FROM article WHERE dateAdded > ?");
+			statement = connection.prepareStatement("SELECT * FROM article WHERE dateAdded > ? AND user_id = ?");
 			statement.setDate(1, (java.sql.Date) lastUpdate);
+			statement.setInt(2, ownerUser);
 			ResultSet result = statement.executeQuery();
 			List<Article> list = new LinkedList<Article>();
 			while (result.next())

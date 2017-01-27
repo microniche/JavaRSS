@@ -1,12 +1,18 @@
 package com.JavaRSS.servlets;
 
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -22,14 +28,40 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.JavaRSS.Beans.Article;
 import com.JavaRSS.Interfaces.DatabaseRequester;
 
 public class Index extends HttpServlet {
 	public static final String ATT_MESSAGES = "messages";
 			
+	private void serialization(OutputStream out) throws IOException
+	{
+		Article article = new Article(1, 1, 1, "google.fr", new Date(), "un test", new Date());
+		Article article2 = new Article(1, 2, 3, "dtc.fr", new Date(), "deux shibal", new Date());
+		List<Article> list = new LinkedList<Article>();
+		list.add(article);
+		list.add(article2);
+		
+		XMLEncoder encoder = null;
+		 
+		try 
+		{
+			encoder = new XMLEncoder(new BufferedOutputStream(out));
+			encoder.writeObject(list);
+			encoder.flush();
+		} 
+		finally
+		{
+			if (encoder != null)
+			{
+				encoder.close();
+			}
+		}
+	}
 public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
 		
-	URL url = new URL("http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/");
+	serialization(response.getOutputStream());
+	/*URL url = new URL("http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/");
 	List<String> messages = new ArrayList<String>();
 	DatabaseRequester dbr = new DatabaseRequester();
 
@@ -65,6 +97,6 @@ public void doGet( HttpServletRequest request, HttpServletResponse response ) th
     //request.setAttribute( ATT_MESSAGES, messages );
     for (int i = 0; i < messages.size(); i++) {
     	response.getWriter().println(messages.get(i));
-    }
+    }*/
 	}
 }
