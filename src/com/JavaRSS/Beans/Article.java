@@ -5,6 +5,7 @@ import java.util.Date;
 public class Article {
 	private int id;
 	private int ownerRss;
+	private int ownerUser;
 	private String url;
 	private Date pubDate;
 	private String description;
@@ -13,14 +14,16 @@ public class Article {
 	{
 		this.id = -1;
 		this.ownerRss = -1;
+		this.ownerUser = -1;
 		this.url = null;
 		this.pubDate = null;
 		this.description = null;
 	}
-	public Article(int id, int ownerRss, String url, Date pubDate, String description) 
+	public Article(int id, int ownerRss, int ownerUser, String url, Date pubDate, String description) 
 	{
 		this.id = id;
 		this.ownerRss = ownerRss;
+		this.ownerUser = ownerUser;
 		this.url = url;
 		this.pubDate = pubDate;
 		this.description = description;
@@ -42,6 +45,15 @@ public class Article {
 	public void setOwnerRss(int ownerRss) 
 	{
 		this.ownerRss = ownerRss;
+	}
+	
+	public int getOwnerUser() 
+	{
+		return ownerUser;
+	}
+	public void setOwnerUser(int ownerUser) 
+	{
+		this.ownerUser = ownerUser;
 	}
 	
 	public String getUrl() 

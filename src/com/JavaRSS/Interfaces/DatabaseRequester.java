@@ -7,10 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.JavaRSS.Beans.Article;
 import com.JavaRSS.Beans.User;
 
 public class DatabaseRequester
@@ -100,11 +102,126 @@ public class DatabaseRequester
 		}
 		return (false);
 	}
+	
+	public List<Article> getArticlesFromRss(int ownerRss)
+	{
+		Connection connection = null;
+		PreparedStatement statement = null;
+		
+		try
+		{
+			connection = DriverManager.getConnection(url, utilisateur, motDePasse);
+			statement = connection.prepareStatement("SELECT * FROM article WHERE rss_id = ?");
+			statement.setInt(1, ownerRss);
+			ResultSet result = statement.executeQuery();
+			List<Article> list = new LinkedList<Article>();
+			while (result.next())
+			{
+				Article article = new Article(result.getInt("id"), 
+												result.getInt("rss_id"), 
+												result.getInt("user_id"), 
+												result.getString("link"), 
+												result.getDate("pubDate"), 
+												result.getString("description"));
+				list.add(article);
+				result.close();
+				return (list);
+			}
+		}
+		catch (SQLException e)
+		{
+			System.out.println("bug  getConnection ou prepareStatement : " + e.getMessage());
+		}
+		finally /* ce qui est mis ici sera fait même si le premier try exit, ou après un return, donc très très utile */
+		{
+			if (statement != null)
+			{
+				try
+				{
+					statement.close();
+				}
+				catch (SQLException ignore)
+				{
+					System.out.println("bug close statement");
+				}
+			}
+			if (connection != null)
+			{
+				try
+				{
+					connection.close();
+				}
+				catch (SQLException ignore)
+				{
+					System.out.println("bug close connection");
+				}
+			}
+		}
+		return (null);
+	}
+	
+	public List<Article> getArticlesFromUser(int ownerUser)
+	{
+		Connection connection = null;
+		PreparedStatement statement = null;
+		
+		try
+		{
+			connection = DriverManager.getConnection(url, utilisateur, motDePasse);
+			statement = connection.prepareStatement("SELECT * FROM article WHERE user_id = ?");
+			statement.setInt(1, ownerUser);
+			ResultSet result = statement.executeQuery();
+			List<Article> list = new LinkedList<Article>();
+			while (result.next())
+			{
+				Article article = new Article(result.getInt("id"), 
+												result.getInt("rss_id"), 
+												result.getInt("user_id"), 
+												result.getString("link"), 
+												result.getDate("pubDate"), 
+												result.getString("description"));
+				list.add(article);
+				result.close();
+				return (list);
+			}
+		}
+		catch (SQLException e)
+		{
+			System.out.println("bug  getConnection ou prepareStatement : " + e.getMessage());
+		}
+		finally /* ce qui est mis ici sera fait même si le premier try exit, ou après un return, donc très très utile */
+		{
+			if (statement != null)
+			{
+				try
+				{
+					statement.close();
+				}
+				catch (SQLException ignore)
+				{
+					System.out.println("bug close statement");
+				}
+			}
+			if (connection != null)
+			{
+				try
+				{
+					connection.close();
+				}
+				catch (SQLException ignore)
+				{
+					System.out.println("bug close connection");
+				}
+			}
+		}
+		return (null);
+	}
+	
 	public User getUserWithPassword(String mail, String password)
 	{
 		Connection connection = null;
 		PreparedStatement statement = null;
-
+		
 		try
 		{
 			connection = DriverManager.getConnection(url, utilisateur, motDePasse);
@@ -119,25 +236,26 @@ public class DatabaseRequester
 				user.setEmail(result.getString("mail"));
 				result.close();
 				return (user);
-			} else
+			}
+			else
 			{
 				result.close();
 				return (null);
 			}
-		} catch (SQLException e)
+		}
+		catch (SQLException e)
 		{
 			System.out.println("bug  getConnection ou prepareStatement : " + e.getMessage());
-		} finally /*
-					 * ce qui est mis ici sera fait même si le premier try exit,
-					 * ou après un return, donc très très utile
-					 */
+		}
+		finally /* ce qui est mis ici sera fait même si le premier try exit, ou après un return, donc très très utile */
 		{
 			if (statement != null)
 			{
 				try
 				{
 					statement.close();
-				} catch (SQLException ignore)
+				}
+				catch (SQLException ignore)
 				{
 					System.out.println("bug close statement");
 				}
@@ -147,7 +265,8 @@ public class DatabaseRequester
 				try
 				{
 					connection.close();
-				} catch (SQLException ignore)
+				}
+				catch (SQLException ignore)
 				{
 					System.out.println("bug close connection");
 				}
@@ -155,18 +274,26 @@ public class DatabaseRequester
 		}
 		return (null);
 	}
+public List<String> addFeed(HttpServletRequest request, String url, String title, int user_id)
+	{
+		this.connect();
+		
+		try
+		{
+			statement = connexion.createStatement();
+			int statut = statement.executeUpdate(
+					"INSERT INTO feeds (url, title, user_id) VALUES (" + url + ", " + title + ", " + user_id + ");");
+			messages.add("resultat de la requete" + statut);
+			statement.close();
+			statement = null;
+			this.disconnect();
+		} catch (SQLException ignore)
+		{
+			System.out.println("Error INSERT");
+		}
 
-	// result = statement.executeQuery( "INSERT INTO users id, mail, pwd FROM
-	// users;" );
-	// while ( result.next() ) {
-	// int idUtilisateur = result.getInt( "id" );
-	// String emailUtilisateur = result.getString( "mail" );
-	// String motDePasseUtilisateur = result.getString( "pwd" );
-	// messages.add( "Donn�es retourn�es par la requ�te : id = " +
-	// idUtilisateur + ", email = " + emailUtilisateur
-	// + ", motdepasse = "
-	// + motDePasseUtilisateur);
-	// }
+		return messages;
+	}
 
 	public List<String> deleteFeed(HttpServletRequest request, int feed_id)
 	{
@@ -207,8 +334,6 @@ public class DatabaseRequester
 
 		return messages;
 	}
-
-	
 	
 	
 	public List<String> toLogin(HttpServletRequest request)
@@ -218,22 +343,22 @@ public class DatabaseRequester
 		try
 		{
 			statement = connexion.createStatement();
-			result = statement.executeQuery("SELECT id, mail, pwd FROM users;");
-			while (result.next())
-			{
-				int idUtilisateur = result.getInt("id");
-				String emailUtilisateur = result.getString("mail");
-				String motDePasseUtilisateur = result.getString("pwd");
-				messages.add("Donn�es retourn�es par la requ�te : id = " + idUtilisateur + ", email = "
-						+ emailUtilisateur + ", motdepasse = " + motDePasseUtilisateur);
-			}
-			statement.close();
-			result.close();
-			statement = null;
-			result = null;
-		} catch (SQLException ignore)
-		{
+			result = statement.executeQuery( "SELECT id, mail, pwd FROM users;" );			
+		      while ( result.next() ) {
+		            int idUtilisateur = result.getInt( "id" );
+		            String emailUtilisateur = result.getString( "mail" );
+		            String motDePasseUtilisateur = result.getString( "pwd" );
+		            messages.add( "Donn�es retourn�es par la requ�te : id = " + idUtilisateur + ", email = " + emailUtilisateur
+		                    + ", motdepasse = "
+		                    + motDePasseUtilisateur);
+		      }
+		      statement.close();
+		      result.close();
+		      statement = null;
+		      result = null;
 		}
+		catch ( SQLException ignore ) {
+        }
 
 		System.out.println("Return Messages");
 		this.disconnect();
