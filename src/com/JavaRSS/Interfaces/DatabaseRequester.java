@@ -55,6 +55,51 @@ public class DatabaseRequester
 			}
 	}
 
+	public boolean addUser(String mail, String password)
+	{
+		Connection connection = null;
+		PreparedStatement statement = null;
+		
+		try
+		{
+			connection = DriverManager.getConnection(url, utilisateur, motDePasse);
+			statement = connection.prepareStatement("INSERT INTO users (mail, pwd) VALUES(?, MD5(?))");
+			statement.setString(1, mail);
+			statement.setString(2,  password);
+			statement.executeUpdate();
+			return (true);
+		}
+		catch (SQLException e)
+		{
+			System.out.println("bug  getConnection ou prepareStatement");
+		}
+		finally /* ce qui est mis ici sera fait même si le premier try exit, ou après un return, donc très très utile */
+		{
+			if (statement != null)
+			{
+				try
+				{
+					statement.close();
+				}
+				catch (SQLException ignore)
+				{
+					System.out.println("bug close statement");
+				}
+			}
+			if (connection != null)
+			{
+				try
+				{
+					connection.close();
+				}
+				catch (SQLException ignore)
+				{
+					System.out.println("bug close connection");
+				}
+			}
+		}
+		return (false);
+	}
 	public User getUserWithPassword(String mail, String password)
 	{
 		Connection connection = null;
