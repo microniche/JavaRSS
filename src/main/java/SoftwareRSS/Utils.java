@@ -2,6 +2,7 @@ package SoftwareRSS;
 
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
@@ -71,5 +72,12 @@ public class Utils {
             e.printStackTrace();
         }
         return (null);
+    }
+    static public void inform(String message)
+    {
+        Alert dialog = new Alert(Alert.AlertType.INFORMATION, message);
+        dialog.setHeaderText("Oops");
+        dialog.setTitle("Rss infos");
+        dialog.show();
     }
 }

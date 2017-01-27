@@ -31,9 +31,11 @@ public class MainController
     private TextField rssField;
 
     private VBox layout = null;
-    static private String token = null;
 
     private ObservableList rssList = null;
+
+    static private final String rssUrl = "http://localhost:8080/ServeurJavaRSS/feeds";
+    static private final String articleUrl = "http://localhost:8080/ServeurJavaRSS/articles";
 
     public MainController()
     {
@@ -98,18 +100,14 @@ public class MainController
     @FXML
     private void loginOrLogout()
     {
-        if (token == null)
+        if (HttpHandler.cookiesToProvide == null)
             LoginController.showLoginWindow();
         else
         {
-            token = null;
+            LoginController.sendLogoutRequest();
+            HttpHandler.cookiesToProvide = null;
             updateLogTexts("You are not logged in", "Login");
         }
-    }
-
-    static public void setToken(String token)
-    {
-        MainController.token = token;
     }
 
     public void updateLogTexts(String labelText, String buttonText)
@@ -121,9 +119,18 @@ public class MainController
     @FXML
     private void addRss()
     {
+        if (HttpHandler.cookiesToProvide == null)
+            System.out.println("You are not logged");
+        else
+        HttpHandler.sendPost(rssUrl, "url", rssField.getText());
         System.out.println(rssField.getText());
     }
 
+    @FXML
+    private void getArticles()
+    {
+        Utils.inform(HttpHandler.sendGet(articleUrl));
+    }
     public VBox getLayout()
     {
         return (layout);
