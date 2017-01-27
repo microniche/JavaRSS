@@ -54,6 +54,7 @@ public class DatabaseRequester
 				connexion = null;
 			} catch (SQLException ignore)
 			{
+				System.out.println("Error connect: " + ignore.getMessage());
 			}
 	}
 
@@ -280,16 +281,17 @@ public List<String> addFeed(HttpServletRequest request, String url, String title
 		
 		try
 		{
-			statement = connexion.createStatement();
-			int statut = statement.executeUpdate(
-					"INSERT INTO feeds (url, title, user_id) VALUES (" + url + ", " + title + ", " + user_id + ");");
+			PreparedStatement statement = connexion.prepareStatement("INSERT INTO feeds (url, title, user_id) VALUES (?, ?, ?);");
+			statement.setString(1, url);
+			statement.setString(2, title);
+			statement.setInt(3, user_id);
+			int statut = statement.executeUpdate();
 			messages.add("resultat de la requete" + statut);
 			statement.close();
-			statement = null;
 			this.disconnect();
-		} catch (SQLException ignore)
+		} catch (SQLException e)
 		{
-			System.out.println("Error INSERT");
+			e.printStackTrace();
 		}
 
 		return messages;
@@ -308,33 +310,11 @@ public List<String> addFeed(HttpServletRequest request, String url, String title
 			this.disconnect();
 		} catch (SQLException ignore)
 		{
-			System.out.println("Error DELETE");
+			System.out.println("Error DELETE:"  + ignore.getMessage());
 		}
 
 		return messages;
-	}
-	
-	public List<String> addFeed(HttpServletRequest request, String url, String title, int user_id)
-	{
-		this.connect();
-		
-		try
-		{
-			statement = connexion.createStatement();
-			int statut = statement.executeUpdate(
-					"INSERT INTO feeds (url, title, user_id) VALUES (" + url + ", " + title + ", " + user_id + ");");
-			messages.add("resultat de la requete" + statut);
-			statement.close();
-			statement = null;
-			this.disconnect();
-		} catch (SQLException ignore)
-		{
-			System.out.println("Error INSERT");
-		}
-
-		return messages;
-	}
-	
+	}	
 	
 	public List<String> toLogin(HttpServletRequest request)
 	{

@@ -63,6 +63,7 @@ public class Feeds extends HttpServlet
 				Element element = (Element) node;
 
 				title = element.getElementsByTagName("title").item(0).getTextContent();
+				System.out.println("url= " + url_str);
 				messages = dbr.addFeed(request, url_str, title, user.getId());
 				
 			} catch (Exception e)
