@@ -168,10 +168,29 @@ public class DatabaseRequester
 	// + motDePasseUtilisateur);
 	// }
 
-	public List<String> addFeed(HttpServletRequest request, String url, String title, int user_id)
+	public List<String> deleteFeed(HttpServletRequest request, int feed_id)
 	{
 		this.connect();
 
+		try
+		{
+			statement = connexion.createStatement();
+			int statut = statement.executeUpdate("Delete From feeds where id=" + feed_id + ";");
+			statement.close();
+			statement = null;
+			this.disconnect();
+		} catch (SQLException ignore)
+		{
+			System.out.println("Error DELETE");
+		}
+
+		return messages;
+	}
+	
+	public List<String> addFeed(HttpServletRequest request, String url, String title, int user_id)
+	{
+		this.connect();
+		
 		try
 		{
 			statement = connexion.createStatement();
@@ -180,6 +199,7 @@ public class DatabaseRequester
 			messages.add("resultat de la requete" + statut);
 			statement.close();
 			statement = null;
+			this.disconnect();
 		} catch (SQLException ignore)
 		{
 			System.out.println("Error INSERT");
@@ -188,6 +208,9 @@ public class DatabaseRequester
 		return messages;
 	}
 
+	
+	
+	
 	public List<String> toLogin(HttpServletRequest request)
 	{
 		this.connect();

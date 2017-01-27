@@ -86,7 +86,10 @@ public class Feeds extends HttpServlet
 		user = (User) request.getSession().getAttribute(INFOS_ATTRIBUTE);
 		if (user != null)
 		{
-
+			int feed_id = Integer.parseInt(request.getParameter("feed_id"));
+			DatabaseRequester dbr = new DatabaseRequester();
+			dbr.deleteFeed(request, feed_id);
+			
 		}
 		else
 		{
