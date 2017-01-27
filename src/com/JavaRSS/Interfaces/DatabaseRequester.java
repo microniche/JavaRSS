@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -123,7 +124,66 @@ public class DatabaseRequester
 												result.getInt("user_id"), 
 												result.getString("link"), 
 												result.getDate("pubDate"), 
-												result.getString("description"));
+												result.getString("description"),
+												result.getDate("dateAdded"));
+				list.add(article);
+				result.close();
+				return (list);
+			}
+		}
+		catch (SQLException e)
+		{
+			System.out.println("bug  getConnection ou prepareStatement : " + e.getMessage());
+		}
+		finally /* ce qui est mis ici sera fait même si le premier try exit, ou après un return, donc très très utile */
+		{
+			if (statement != null)
+			{
+				try
+				{
+					statement.close();
+				}
+				catch (SQLException ignore)
+				{
+					System.out.println("bug close statement");
+				}
+			}
+			if (connection != null)
+			{
+				try
+				{
+					connection.close();
+				}
+				catch (SQLException ignore)
+				{
+					System.out.println("bug close connection");
+				}
+			}
+		}
+		return (null);
+	}
+	
+	public List<Article> getArticlesFromLastUpdate(Date lastUpdate)
+	{
+		Connection connection = null;
+		PreparedStatement statement = null;
+		
+		try
+		{
+			connection = DriverManager.getConnection(url, utilisateur, motDePasse);
+			statement = connection.prepareStatement("SELECT * FROM article WHERE dateAdded > ?");
+			statement.setDate(1, (java.sql.Date) lastUpdate);
+			ResultSet result = statement.executeQuery();
+			List<Article> list = new LinkedList<Article>();
+			while (result.next())
+			{
+				Article article = new Article(result.getInt("id"), 
+												result.getInt("rss_id"), 
+												result.getInt("user_id"), 
+												result.getString("link"), 
+												result.getDate("pubDate"), 
+												result.getString("description"),
+												result.getDate("dateAdded"));
 				list.add(article);
 				result.close();
 				return (list);
@@ -180,7 +240,8 @@ public class DatabaseRequester
 												result.getInt("user_id"), 
 												result.getString("link"), 
 												result.getDate("pubDate"), 
-												result.getString("description"));
+												result.getString("description"),
+												result.getDate("dateAdded"));
 				list.add(article);
 				result.close();
 				return (list);

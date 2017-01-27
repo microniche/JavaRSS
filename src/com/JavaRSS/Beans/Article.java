@@ -9,6 +9,7 @@ public class Article {
 	private String url;
 	private Date pubDate;
 	private String description;
+	private Date dateAdded;
 	
 	public Article()
 	{
@@ -18,8 +19,9 @@ public class Article {
 		this.url = null;
 		this.pubDate = null;
 		this.description = null;
+		this.dateAdded = null;
 	}
-	public Article(int id, int ownerRss, int ownerUser, String url, Date pubDate, String description) 
+	public Article(int id, int ownerRss, int ownerUser, String url, Date pubDate, String description, Date dateAdded) 
 	{
 		this.id = id;
 		this.ownerRss = ownerRss;
@@ -27,6 +29,7 @@ public class Article {
 		this.url = url;
 		this.pubDate = pubDate;
 		this.description = description;
+		this.dateAdded = dateAdded;
 	}
 	
 	public int getId() 
@@ -81,5 +84,14 @@ public class Article {
 	public void setDescription(String description) 
 	{
 		this.description = description;
+	}
+	
+	public Date getDateAdded()
+	{
+		return dateAdded;
+	}
+	public void setDateAdded(Date dateAdded)
+	{
+		this.dateAdded = dateAdded;
 	}
 }
