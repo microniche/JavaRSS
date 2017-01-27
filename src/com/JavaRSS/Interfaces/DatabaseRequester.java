@@ -59,7 +59,7 @@ public class DatabaseRequester
 	{
 		Connection connection = null;
 		PreparedStatement statement = null;
-		
+
 		try
 		{
 			connection = DriverManager.getConnection(url, utilisateur, motDePasse);
@@ -74,26 +74,25 @@ public class DatabaseRequester
 				user.setEmail(result.getString("mail"));
 				result.close();
 				return (user);
-			}
-			else
+			} else
 			{
 				result.close();
 				return (null);
 			}
-		}
-		catch (SQLException e)
+		} catch (SQLException e)
 		{
 			System.out.println("bug  getConnection ou prepareStatement : " + e.getMessage());
-		}
-		finally /* ce qui est mis ici sera fait même si le premier try exit, ou après un return, donc très très utile */
+		} finally /*
+					 * ce qui est mis ici sera fait même si le premier try exit,
+					 * ou après un return, donc très très utile
+					 */
 		{
 			if (statement != null)
 			{
 				try
 				{
 					statement.close();
-				}
-				catch (SQLException ignore)
+				} catch (SQLException ignore)
 				{
 					System.out.println("bug close statement");
 				}
@@ -103,8 +102,7 @@ public class DatabaseRequester
 				try
 				{
 					connection.close();
-				}
-				catch (SQLException ignore)
+				} catch (SQLException ignore)
 				{
 					System.out.println("bug close connection");
 				}
@@ -112,36 +110,39 @@ public class DatabaseRequester
 		}
 		return (null);
 	}
-	public List<String> addFeed(HttpServletRequest request)
+
+	// result = statement.executeQuery( "INSERT INTO users id, mail, pwd FROM
+	// users;" );
+	// while ( result.next() ) {
+	// int idUtilisateur = result.getInt( "id" );
+	// String emailUtilisateur = result.getString( "mail" );
+	// String motDePasseUtilisateur = result.getString( "pwd" );
+	// messages.add( "Donn�es retourn�es par la requ�te : id = " +
+	// idUtilisateur + ", email = " + emailUtilisateur
+	// + ", motdepasse = "
+	// + motDePasseUtilisateur);
+	// }
+
+	public List<String> addFeed(HttpServletRequest request, String url, String title, int user_id)
 	{
 		this.connect();
-		
+
 		try
 		{
 			statement = connexion.createStatement();
-			int statut = statement.executeUpdate("INSERT INTO feeds (url, user_id) VALUES ('http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/', 4242)");
-//			result = statement.executeQuery( "INSERT INTO users id, mail, pwd FROM users;" );			
-//		      while ( result.next() ) {
-//		            int idUtilisateur = result.getInt( "id" );
-//		            String emailUtilisateur = result.getString( "mail" );
-//		            String motDePasseUtilisateur = result.getString( "pwd" );
-//		            messages.add( "Donn�es retourn�es par la requ�te : id = " + idUtilisateur + ", email = " + emailUtilisateur
-//		                    + ", motdepasse = "
-//		                    + motDePasseUtilisateur);
-//		      }
+			int statut = statement.executeUpdate(
+					"INSERT INTO feeds (url, title, user_id) VALUES (" + url + ", " + title + ", " + user_id + ");");
 			messages.add("resultat de la requete" + statut);
-		      statement.close();
-		      statement = null;
-		}
-		catch ( SQLException ignore ) {
+			statement.close();
+			statement = null;
+		} catch (SQLException ignore)
+		{
 			System.out.println("Error INSERT");
-        }
+		}
 
-		
 		return messages;
 	}
-	
-	
+
 	public List<String> toLogin(HttpServletRequest request)
 	{
 		this.connect();
@@ -149,22 +150,22 @@ public class DatabaseRequester
 		try
 		{
 			statement = connexion.createStatement();
-			result = statement.executeQuery( "SELECT id, mail, pwd FROM users;" );			
-		      while ( result.next() ) {
-		            int idUtilisateur = result.getInt( "id" );
-		            String emailUtilisateur = result.getString( "mail" );
-		            String motDePasseUtilisateur = result.getString( "pwd" );
-		            messages.add( "Donn�es retourn�es par la requ�te : id = " + idUtilisateur + ", email = " + emailUtilisateur
-		                    + ", motdepasse = "
-		                    + motDePasseUtilisateur);
-		      }
-		      statement.close();
-		      result.close();
-		      statement = null;
-		      result = null;
+			result = statement.executeQuery("SELECT id, mail, pwd FROM users;");
+			while (result.next())
+			{
+				int idUtilisateur = result.getInt("id");
+				String emailUtilisateur = result.getString("mail");
+				String motDePasseUtilisateur = result.getString("pwd");
+				messages.add("Donn�es retourn�es par la requ�te : id = " + idUtilisateur + ", email = "
+						+ emailUtilisateur + ", motdepasse = " + motDePasseUtilisateur);
+			}
+			statement.close();
+			result.close();
+			statement = null;
+			result = null;
+		} catch (SQLException ignore)
+		{
 		}
-		catch ( SQLException ignore ) {
-        }
 
 		System.out.println("Return Messages");
 		this.disconnect();
