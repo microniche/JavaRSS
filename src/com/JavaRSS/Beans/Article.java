@@ -12,6 +12,7 @@ public class Article implements Serializable{
 	private String description;
 	private Date dateAdded;
 	private boolean isRead;
+	private String guid;
 	
 	public Article()
 	{
@@ -22,9 +23,10 @@ public class Article implements Serializable{
 		this.pubDate = null;
 		this.description = null;
 		this.dateAdded = null;
+		this.guid = null;
 	}
 	public Article(int id, int ownerRss, int ownerUser, String url, Date pubDate, String description, Date dateAdded,
-			boolean isRead)
+			boolean isRead, String guid)
 	{
 		this.id = id;
 		this.ownerRss = ownerRss;
@@ -34,8 +36,21 @@ public class Article implements Serializable{
 		this.description = description;
 		this.dateAdded = dateAdded;
 		this.isRead = isRead;
+		this.guid = guid;
 	}
 	
+	public String getGuid()
+	{
+		return guid;
+	}
+	public void setGuid(String guid)
+	{
+		this.guid = guid;
+	}
+	public void setRead(boolean isRead) 
+	{
+		this.isRead = isRead;
+	}
 	public int getId() 
 	{
 		return id;
