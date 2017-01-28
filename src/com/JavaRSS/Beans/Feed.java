@@ -1,13 +1,13 @@
 package com.JavaRSS.Beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Feed {
+public class Feed implements Serializable{
 	private int id;
 	private int ownerUser;
 	private String link;
 	private String title;
-	private String description;
 	private Date lastBuildDate;
 	
 	public Feed()
@@ -16,17 +16,15 @@ public class Feed {
 		this.ownerUser = -1;
 		this.link = null;
 		this.title = null;
-		this.description = null;
 		this.lastBuildDate = null;
 	}
 	
-	public Feed(int id, int ownerUser, String link, String title, String description, Date lastBuildDate) 
+	public Feed(int id, int ownerUser, String link, String title, Date lastBuildDate) 
 	{
 		this.id = id;
 		this.ownerUser = ownerUser;
 		this.link = link;
 		this.title = title;
-		this.description = description;
 		this.lastBuildDate = lastBuildDate;
 	}
 	
@@ -64,14 +62,7 @@ public class Feed {
 	{
 		this.title = title;
 	}
-	public String getDescription()
-	{
-		return description;
-	}
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
+	
 	public Date getLastBuildDate()
 	{
 		return lastBuildDate;

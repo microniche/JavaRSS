@@ -17,8 +17,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.JavaRSS.Beans.Feed;
 import com.JavaRSS.Beans.User;
 import com.JavaRSS.Interfaces.DatabaseRequester;
+import com.JavaRSS.Interfaces.XmlSerializer;
 
 public class Feeds extends HttpServlet
 {
@@ -32,9 +34,13 @@ public class Feeds extends HttpServlet
 		user = (User) request.getSession().getAttribute(INFOS_ATTRIBUTE);
 		if (user != null)
 		{
-
+			DatabaseRequester db = new DatabaseRequester();
+			db.connect();
+			List<Feed> feeds = db.getFeeds(user.getId());
+			System.out.println("size: " + feeds.size());
+			db.disconnect();
+			XmlSerializer.writeTo(feeds, response.getOutputStream());
 		}
-
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

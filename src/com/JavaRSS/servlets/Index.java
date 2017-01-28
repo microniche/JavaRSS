@@ -36,8 +36,8 @@ public class Index extends HttpServlet {
 			
 	private void serialization(OutputStream out) throws IOException
 	{
-		Article article = new Article(1, 1, 1, "google.fr", new Date(), "un test", new Date());
-		Article article2 = new Article(1, 2, 3, "dtc.fr", new Date(), "deux shibal", new Date());
+		Article article = new Article(1, 1, 1, "google.fr", new Date(), "un test", new Date(), false);
+		Article article2 = new Article(1, 2, 3, "dtc.fr", new Date(), "deux shibal", new Date(), false);
 		List<Article> list = new LinkedList<Article>();
 		list.add(article);
 		list.add(article2);

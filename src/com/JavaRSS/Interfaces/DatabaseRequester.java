@@ -14,6 +14,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.JavaRSS.Beans.Article;
+import com.JavaRSS.Beans.Feed;
 import com.JavaRSS.Beans.User;
 
 public class DatabaseRequester
@@ -33,6 +34,7 @@ public class DatabaseRequester
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e)
 		{
+			e.printStackTrace();
 		}
 
 		try
@@ -42,7 +44,7 @@ public class DatabaseRequester
 			System.out.println("Connexion itinitalize");
 		} catch (SQLException e)
 		{
-			System.out.println("Connexion failure");
+			e.printStackTrace();
 		}
 	}
 
@@ -55,7 +57,7 @@ public class DatabaseRequester
 				connexion = null;
 			} catch (SQLException ignore)
 			{
-				System.out.println("Error connect: " + ignore.getMessage());
+				ignore.printStackTrace();
 			}
 	}
 
@@ -75,7 +77,7 @@ public class DatabaseRequester
 		}
 		catch (SQLException e)
 		{
-			System.out.println("bug  getConnection ou prepareStatement");
+			e.printStackTrace();
 		}
 		finally /* ce qui est mis ici sera fait même si le premier try exit, ou après un return, donc très très utile */
 		{
@@ -87,7 +89,7 @@ public class DatabaseRequester
 				}
 				catch (SQLException ignore)
 				{
-					System.out.println("bug close statement");
+					ignore.printStackTrace();
 				}
 			}
 			if (connection != null)
@@ -98,7 +100,7 @@ public class DatabaseRequester
 				}
 				catch (SQLException ignore)
 				{
-					System.out.println("bug close connection");
+					ignore.printStackTrace();
 				}
 			}
 		}
@@ -126,15 +128,16 @@ public class DatabaseRequester
 												result.getString("link"), 
 												result.getDate("pubDate"), 
 												result.getString("description"),
-												result.getDate("dateAdded"));
+												result.getDate("dateAdded"),
+												result.getBoolean("isRead"));
 				list.add(article);
-				result.close();
-				return (list);
 			}
+			result.close();
+			return (list);
 		}
 		catch (SQLException e)
 		{
-			System.out.println("bug  getConnection ou prepareStatement : " + e.getMessage());
+			e.printStackTrace();
 		}
 		finally /* ce qui est mis ici sera fait même si le premier try exit, ou après un return, donc très très utile */
 		{
@@ -146,7 +149,7 @@ public class DatabaseRequester
 				}
 				catch (SQLException ignore)
 				{
-					System.out.println("bug close statement");
+					ignore.printStackTrace();
 				}
 			}
 			if (connection != null)
@@ -157,7 +160,7 @@ public class DatabaseRequester
 				}
 				catch (SQLException ignore)
 				{
-					System.out.println("bug close connection");
+					ignore.printStackTrace();
 				}
 			}
 		}
@@ -180,20 +183,21 @@ public class DatabaseRequester
 			while (result.next())
 			{
 				Article article = new Article(result.getInt("id"), 
-												result.getInt("rss_id"), 
-												result.getInt("user_id"), 
-												result.getString("link"), 
-												result.getDate("pubDate"), 
-												result.getString("description"),
-												result.getDate("dateAdded"));
+						result.getInt("rss_id"), 
+						result.getInt("user_id"), 
+						result.getString("link"), 
+						result.getDate("pubDate"), 
+						result.getString("description"),
+						result.getDate("dateAdded"),
+						result.getBoolean("isRead"));
 				list.add(article);
-				result.close();
-				return (list);
 			}
+			result.close();
+			return (list);
 		}
 		catch (SQLException e)
 		{
-			System.out.println("bug  getConnection ou prepareStatement : " + e.getMessage());
+			e.printStackTrace();
 		}
 		finally /* ce qui est mis ici sera fait même si le premier try exit, ou après un return, donc très très utile */
 		{
@@ -205,7 +209,7 @@ public class DatabaseRequester
 				}
 				catch (SQLException ignore)
 				{
-					System.out.println("bug close statement");
+					ignore.printStackTrace();
 				}
 			}
 			if (connection != null)
@@ -216,7 +220,7 @@ public class DatabaseRequester
 				}
 				catch (SQLException ignore)
 				{
-					System.out.println("bug close connection");
+					ignore.printStackTrace();
 				}
 			}
 		}
@@ -238,20 +242,21 @@ public class DatabaseRequester
 			while (result.next())
 			{
 				Article article = new Article(result.getInt("id"), 
-												result.getInt("rss_id"), 
-												result.getInt("user_id"), 
-												result.getString("link"), 
-												result.getDate("pubDate"), 
-												result.getString("description"),
-												result.getDate("dateAdded"));
+						result.getInt("rss_id"), 
+						result.getInt("user_id"), 
+						result.getString("link"), 
+						result.getDate("pubDate"), 
+						result.getString("description"),
+						result.getDate("dateAdded"),
+						result.getBoolean("isRead"));
 				list.add(article);
-				result.close();
-				return (list);
 			}
+			result.close();
+			return (list);
 		}
 		catch (SQLException e)
 		{
-			System.out.println("bug  getConnection ou prepareStatement : " + e.getMessage());
+			e.printStackTrace();
 		}
 		finally /* ce qui est mis ici sera fait même si le premier try exit, ou après un return, donc très très utile */
 		{
@@ -263,7 +268,7 @@ public class DatabaseRequester
 				}
 				catch (SQLException ignore)
 				{
-					System.out.println("bug close statement");
+					ignore.printStackTrace();
 				}
 			}
 			if (connection != null)
@@ -274,7 +279,7 @@ public class DatabaseRequester
 				}
 				catch (SQLException ignore)
 				{
-					System.out.println("bug close connection");
+					ignore.printStackTrace();
 				}
 			}
 		}
@@ -321,7 +326,7 @@ public class DatabaseRequester
 				}
 				catch (SQLException ignore)
 				{
-					System.out.println("bug close statement");
+					ignore.printStackTrace();
 				}
 			}
 			if (connection != null)
@@ -332,7 +337,7 @@ public class DatabaseRequester
 				}
 				catch (SQLException ignore)
 				{
-					System.out.println("bug close connection");
+					ignore.printStackTrace();
 				}
 			}
 		}
@@ -373,11 +378,67 @@ public List<String> addFeed(HttpServletRequest request, String url, String title
 			this.disconnect();
 		} catch (SQLException ignore)
 		{
-			System.out.println("Error DELETE:"  + ignore.getMessage());
+			ignore.printStackTrace();
 		}
 
 		return messages;
 	}	
+	
+	public List<Feed> getFeeds(int ownerUser)
+	{
+		Connection connection = null;
+		PreparedStatement statement = null;
+		
+		try
+		{
+			connection = DriverManager.getConnection(url, utilisateur, motDePasse);
+			statement = connection.prepareStatement("SELECT * FROM feeds WHERE user_id = ?");
+			statement.setInt(1, ownerUser);
+			ResultSet result = statement.executeQuery();
+			List<Feed> list = new LinkedList<Feed>();
+			while (result.next())
+			{
+				Feed feed = new Feed(result.getInt("id"),
+										ownerUser,
+										result.getString("url"),
+										result.getString("title"),
+										result.getDate("lastBuildDate"));
+				list.add(feed);
+			}
+			result.close();
+			return (list);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally /* ce qui est mis ici sera fait même si le premier try exit, ou après un return, donc très très utile */
+		{
+			if (statement != null)
+			{
+				try
+				{
+					statement.close();
+				}
+				catch (SQLException ignore)
+				{
+					System.out.println("bug close statement");
+				}
+			}
+			if (connection != null)
+			{
+				try
+				{
+					connection.close();
+				}
+				catch (SQLException ignore)
+				{
+					System.out.println("bug close connection");
+				}
+			}
+		}
+		return (null);
+	}
 	
 	public List<String> toLogin(HttpServletRequest request)
 	{
