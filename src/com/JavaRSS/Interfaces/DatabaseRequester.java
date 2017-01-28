@@ -343,11 +343,12 @@ public class DatabaseRequester
 		}
 		return (null);
 	}
+	
 public List<String> addFeed(HttpServletRequest request, String url, String title, int user_id)
 	{
 		this.connect();
 		
-		try
+	try
 		{
 			PreparedStatement statement = connexion.prepareStatement("INSERT INTO feeds (url, title, user_id) VALUES (?, ?, ?);");
 			statement.setString(1, url);
@@ -364,6 +365,35 @@ public List<String> addFeed(HttpServletRequest request, String url, String title
 
 		return messages;
 	}
+
+public List<String> addArticle(int rss_id, int user_id, String link, Date pubDate, String description, String guid)
+{
+	this.connect();
+
+	try
+	{
+		Date d = new Date();
+		PreparedStatement statement = connexion.prepareStatement("INSERT INTO article (rss_id, user_id, link, pubDate, description, dateAdded, isRead, guid) VALUES (?, ?, ?, ?, ?, ?, ?);");
+		statement.setInt(1, rss_id);
+		statement.setInt(2, user_id);
+		statement.setString(3, link);
+		statement.setDate(4, (java.sql.Date) pubDate);
+		statement.setString(5, description);
+		statement.setDate(6, (java.sql.Date) d);
+		statement.setBoolean(7, false);
+		statement.setString(8, guid);
+		int statut = statement.executeUpdate();
+		messages.add("resultat de la requete" + statut);
+		statement.close();
+		this.disconnect();
+	} catch (SQLException e)
+	{
+		e.printStackTrace();
+	}
+
+	return messages;
+}
+
 
 	public List<String> deleteFeed(HttpServletRequest request, int feed_id)
 	{
