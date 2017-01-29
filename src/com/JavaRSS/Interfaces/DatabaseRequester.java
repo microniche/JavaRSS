@@ -356,6 +356,8 @@ public List<String> addFeed(HttpServletRequest request, String url, String title
 		
 		try
 		{
+			if (title.length() > 255)
+				title = title.substring(0, 255);
 			PreparedStatement statement = connexion.prepareStatement("INSERT INTO feeds (url, title, user_id, lastBuildDate) VALUES (?, ?, ?, NULL);");
 			statement.setString(1, url);
 			statement.setString(2, title);

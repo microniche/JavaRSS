@@ -66,6 +66,7 @@ public class Articles extends HttpServlet
 					Date date = format.parse(eElement.getElementsByTagName("pubDate").item(0).getTextContent());
 					Article article = new Article(-1, 
 													feed.getId(), 
+													
 													user.getId(), 
 													eElement.getElementsByTagName("title").item(0).getTextContent(),
 													eElement.getElementsByTagName("link").item(0).getTextContent(), 
@@ -73,6 +74,10 @@ public class Articles extends HttpServlet
 													eElement.getElementsByTagName("description").item(0).getTextContent(),
 													new Date(),
 													false, eElement.getElementsByTagName("guid").item(0).getTextContent());
+					if (article.getTitle().length() > 255)
+						article.setTitle(article.getTitle().substring(0, 255));
+					if (article.getDescription().length() > 255)
+						article.setDescription(article.getDescription().substring(0, 255));
 					db.addArticle(feed.getId(),
 							user.getId(),
 							article.getTitle(),
