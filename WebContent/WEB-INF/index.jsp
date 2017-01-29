@@ -1,4 +1,6 @@
-<%@ page pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,9 +37,12 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                	<c:if test = "${not empty sessionScope.infos}">
                     <li>
-                        <a href="#">Logout from ...</a>
+                        <a href="#" id="logoutLink">Logout from <c:out value = "${sessionScope.infos.email}" /></a>
                     </li>
+                    </c:if>
+                    <c:if test = "${empty sessionScope.infos}">
                     <li>
                         <a href="#" data-toggle="modal" data-target="#loginModal">Login</a>
                         <!-- Modal -->
@@ -46,29 +51,31 @@
                         <div id="loginModal" class="modal fade" role="dialog">
                             <div class="modal-dialog">
                                 <!-- Modal content-->
-                                <form class="modal-content">
+                                <form class="modal-content" action="login" method="post">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         <h4 class="modal-title">Login</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="nickname">Nickname:</label>
-                                            <input type="texte" class="form-control" id="nickname" placeholder="Enter nickname">
+                                            <label for="mail">Email:</label>
+                                            <input type="text" class="form-control" id="maillogin" name="mail" placeholder="Enter mail">
                                         </div>
                                         <div class="form-group">
                                             <label for="pwd">Password:</label>
-                                            <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+                                            <input type="password" class="form-control" id="pwdlogin" name="password" placeholder="Enter password">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-default" data-dismiss="modal">Login</button>
+                                        <button type="submit" id ="submitlogin" class="btn btn-default" data-dismiss="modal">Login</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <!-- End Modal -->
                     </li>
+                    </c:if>
+                    <c:if test = "${empty sessionScope.infos}">
                     <li>
                         <a href="#" data-toggle="modal" data-target="#registerModal">Register</a>
                         <!-- Modal -->
@@ -77,37 +84,30 @@
                         <div id="registerModal" class="modal fade" role="dialog">
                             <div class="modal-dialog">
                                 <!-- Modal content-->
-                                <form class="modal-content">
+                                <form class="modal-content" action="register" method="post">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         <h4 class="modal-title">Register</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="nickname">Nickname:</label>
-                                            <input type="texte" class="form-control" id="nickname" placeholder="Enter nickname">
-                                        </div>
-                                        <div class="form-group">
                                             <label for="email">Email:</label>
-                                            <input type="email" class="form-control" id="email" placeholder="Enter email">
+                                            <input type="email" class="form-control" id="mailregister" name="mail" placeholder="Enter email">
                                         </div>
                                         <div class="form-group">
                                             <label for="pwd">Password:</label>
-                                            <input type="password" class="form-control" id="pwd" placeholder="Enter password">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="pwd2">Confirm password:</label>
-                                            <input type="password" class="form-control" id="pwd2" placeholder="Enter again password">
+                                            <input type="password" class="form-control" id="pwdregister" name="password" placeholder="Enter password">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-default" data-dismiss="modal">Register</button>
+                                        <button type="submit" id ="submitregister" class="btn btn-default" data-dismiss="modal">Register</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <!-- End Modal -->
                     </li>
+                    </c:if>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -126,7 +126,7 @@
                 </h1>
 
                 <h2>
-                    <a href="#">MickaÃ«l va encore passer pour cette fois !</a>
+                    <a href="#">Mickaël va encore passer pour cette fois !</a>
                 </h2>
                 <p class="lead">
                     by <a href="index.php">Le Monde</a>
@@ -163,22 +163,14 @@
                     <div class="row">
                         <table class="col-lg-6 table table-striped table-hover whiteBackground">
                             <tbody>
-                                <tr>
-                                    <td>Le Monde</td>
-                                    <td><button type="button" class="close">&times;</button></td>
-                                </tr>
-                                <tr>
-                                    <td>01 Net</td>
-                                    <td><button type="button" class="close">&times;</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Le Gorafi</td>
-                                    <td><button type="button" class="close">&times;</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Le Figaro</td>
-                                    <td><button type="button" class="close">&times;</button></td>
-                                </tr>
+                            <c:if test = "${not empty requestScope.feeds}">
+                            	<c:forEach items="${requestScope.feeds}" var="feed">
+                            		<tr>
+                                    	<td><c:out value = "${feed.title}" /></td>
+                                    	<td><button type="button" class="close">&times;</button></td>
+                                	</tr>
+                            	</c:forEach>
+                            </c:if>
                             </tbody>
                         </table>
                         <!-- /.col-lg-6 -->
