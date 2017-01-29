@@ -7,6 +7,7 @@ public class Article implements Serializable{
 	private int id;
 	private int ownerRss;
 	private int ownerUser;
+	private String title;
 	private String url;
 	private Date pubDate;
 	private String description;
@@ -19,18 +20,20 @@ public class Article implements Serializable{
 		this.id = -1;
 		this.ownerRss = -1;
 		this.ownerUser = -1;
+		this.title = null;
 		this.url = null;
 		this.pubDate = null;
 		this.description = null;
 		this.dateAdded = null;
 		this.guid = null;
 	}
-	public Article(int id, int ownerRss, int ownerUser, String url, Date pubDate, String description, Date dateAdded,
+	public Article(int id, int ownerRss, int ownerUser, String title, String url, Date pubDate, String description, Date dateAdded,
 			boolean isRead, String guid)
 	{
 		this.id = id;
 		this.ownerRss = ownerRss;
 		this.ownerUser = ownerUser;
+		this.title = title;
 		this.url = url;
 		this.pubDate = pubDate;
 		this.description = description;
@@ -121,5 +124,14 @@ public class Article implements Serializable{
 	public void setIsRead(boolean isRead) 
 	{
 		this.isRead = isRead;
+	}
+	
+	public String getTitle()
+	{
+		return title;
+	}
+	public void setTitle(String title) 
+	{
+		this.title = title;
 	}
 }

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -124,12 +125,14 @@ public class DatabaseRequester
 			{
 				Article article = new Article(result.getInt("id"), 
 												result.getInt("rss_id"), 
-												result.getInt("user_id"), 
+												result.getInt("user_id"),
+												result.getString("title"),
 												result.getString("link"), 
 												result.getDate("pubDate"), 
 												result.getString("description"),
 												result.getDate("dateAdded"),
-												result.getBoolean("isRead"));
+												result.getBoolean("isRead"),
+												result.getString("guid"));
 				list.add(article);
 			}
 			result.close();
@@ -176,7 +179,7 @@ public class DatabaseRequester
 		{
 			connection = DriverManager.getConnection(url, utilisateur, motDePasse);
 			statement = connection.prepareStatement("SELECT * FROM article WHERE dateAdded > ? AND user_id = ?");
-			statement.setDate(1, (java.sql.Date) lastUpdate);
+			statement.setTimestamp(1, new Timestamp(lastUpdate.getTime()));
 			statement.setInt(2, ownerUser);
 			ResultSet result = statement.executeQuery();
 			List<Article> list = new LinkedList<Article>();
@@ -184,12 +187,14 @@ public class DatabaseRequester
 			{
 				Article article = new Article(result.getInt("id"), 
 						result.getInt("rss_id"), 
-						result.getInt("user_id"), 
+						result.getInt("user_id"),
+						result.getString("title"),
 						result.getString("link"), 
 						result.getDate("pubDate"), 
 						result.getString("description"),
 						result.getDate("dateAdded"),
-						result.getBoolean("isRead"));
+						result.getBoolean("isRead"),
+						result.getString("guid"));
 				list.add(article);
 			}
 			result.close();
@@ -243,12 +248,14 @@ public class DatabaseRequester
 			{
 				Article article = new Article(result.getInt("id"), 
 						result.getInt("rss_id"), 
-						result.getInt("user_id"), 
+						result.getInt("user_id"),
+						result.getString("title"),
 						result.getString("link"), 
 						result.getDate("pubDate"), 
 						result.getString("description"),
 						result.getDate("dateAdded"),
-						result.getBoolean("isRead"));
+						result.getBoolean("isRead"),
+						result.getString("guid"));
 				list.add(article);
 			}
 			result.close();
@@ -349,7 +356,7 @@ public List<String> addFeed(HttpServletRequest request, String url, String title
 		
 		try
 		{
-			PreparedStatement statement = connexion.prepareStatement("INSERT INTO feeds (url, title, user_id) VALUES (?, ?, ?);");
+			PreparedStatement statement = connexion.prepareStatement("INSERT INTO feeds (url, title, user_id, lastBuildDate) VALUES (?, ?, ?, NULL);");
 			statement.setString(1, url);
 			statement.setString(2, title);
 			statement.setInt(3, user_id);
@@ -468,5 +475,32 @@ public List<String> addFeed(HttpServletRequest request, String url, String title
 		this.disconnect();
 		return messages;
 	}
-
+	public int addArticle(int rss_id, int user_id, String title, String link, Date pubDate, String description, String guid)
+	{
+		this.connect();
+		//int id = -1;
+		try
+		{
+			PreparedStatement statement = connexion.prepareStatement("INSERT INTO article (rss_id, user_id, title, link, pubDate, description, dateAdded, isRead, guid) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?);");
+			statement.setInt(1, rss_id);
+			statement.setInt(2, user_id);
+			statement.setString(3, title);
+			statement.setString(4, link);
+			statement.setTimestamp(5, new Timestamp(pubDate.getTime()));
+			statement.setString(6, description);
+			statement.setBoolean(7, false);
+			statement.setString(8, guid);
+			int statut = statement.executeUpdate();
+			/*ResultSet keys = statement.getGeneratedKeys();
+			if (statut == 1 && keys.next())
+				id = keys.getInt(1);*/
+			statement.close();
+			this.disconnect();
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		//System.out.println("addArticle: generated Id: " + id);
+		return (0);
+	}
 }
