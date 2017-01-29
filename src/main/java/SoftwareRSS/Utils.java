@@ -2,6 +2,7 @@ package SoftwareRSS;
 
 
 import com.JavaRSS.Beans.Article;
+import com.JavaRSS.Beans.DataState;
 import com.JavaRSS.Beans.Feed;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
@@ -12,8 +13,8 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.beans.XMLDecoder;
-import java.io.IOException;
-import java.io.InputStream;
+import java.beans.XMLEncoder;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -96,5 +97,41 @@ public class Utils {
         XMLDecoder decoder = new XMLDecoder(stream);
         decoder.close();
         return ((List<Article>)decoder.readObject());
+    }
+    static public DataState deserializeDataState(String filename)
+    {
+        try {
+            XMLDecoder decoder = new XMLDecoder(new FileInputStream(filename));
+            decoder.close();
+            return ((DataState) decoder.readObject());
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("no DataState file");
+        }
+        return (null);
+    }
+    static public void serialize(Object obj, String fileDest)
+    {
+
+        XMLEncoder encoder = null;
+
+        try
+        {
+            encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(fileDest, false)));
+            encoder.writeObject(obj);
+            encoder.flush();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (encoder != null)
+            {
+                encoder.close();
+            }
+        }
     }
 }

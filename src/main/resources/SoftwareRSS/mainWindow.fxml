@@ -15,7 +15,6 @@
          <children>
             <Label fx:id="logLabel" text="You're not logged in" />
             <Button fx:id="logButton" mnemonicParsing="false" onAction="#loginOrLogout" text="Login" />
-            <Button mnemonicParsing="false" onAction="#getArticles" text="getArticles" />
          </children>
       </HBox>
       <SplitPane dividerPositions="0.7053291536050157" VBox.vgrow="ALWAYS">

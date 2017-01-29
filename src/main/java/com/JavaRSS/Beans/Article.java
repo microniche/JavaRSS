@@ -134,4 +134,9 @@ public class Article implements Serializable{
     {
         this.title = title;
     }
+
+    public long getPubDateValue()
+    {
+        return (pubDate.getTime());
+    }
 }

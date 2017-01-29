@@ -141,6 +141,16 @@ public class HttpHandler {
         return (null);
     }
 
+    static public InputStream sendGetInputVersion(String url, String... params)
+    {
+        String urlParameters = params[0] + '=' + params[1]; // fail if there is no params but there should be
+        for (int i = 2; i < params.length; i = i + 2)
+        {
+            urlParameters += '&' + params[i] + '=' + params[i + 1];
+        }
+        return (sendGetInputVersion(url + '?' + urlParameters));
+    }
+
     static public String sendGet(String url, String... params)
     {
         String urlParameters = params[0] + '=' + params[1]; // fail if there is no params but there should be

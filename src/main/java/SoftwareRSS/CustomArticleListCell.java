@@ -67,7 +67,7 @@ public class CustomArticleListCell extends ListCell<Article> {
                 readView.setVisible(true);
             dateLabel.setText(item.getPubDate().toString());
             rssLabel.setText(getFeedTitleFromArticle(item));
-            descriptionLabel.setText(item.getDescription());
+            descriptionLabel.setText(item.getTitle());
         }
         else
         {
