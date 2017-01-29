@@ -10,7 +10,7 @@
 </servlet>
 <servlet-mapping>
 	<servlet-name>Index</servlet-name>
-	<url-pattern>/</url-pattern>
+	<url-pattern>/index</url-pattern>
 </servlet-mapping>
 
 <servlet>
@@ -65,5 +65,14 @@
 <servlet-mapping>
 	<servlet-name>CheckLogged</servlet-name>
 	<url-pattern>/check</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>ArticleRead</servlet-name>
+	<servlet-class>com.JavaRSS.servlets.ArticleRead</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>ArticleRead</servlet-name>
+	<url-pattern>/articleread</url-pattern>
 </servlet-mapping>
 </web-app>
