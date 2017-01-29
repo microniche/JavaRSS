@@ -108,13 +108,8 @@ public class Articles extends HttpServlet
 			String param = request.getParameter("lastUpdate");
 			if (param != null)
 			{
-				try {
-					Date lastUpdate = DateFormat.getInstance().parse(param);
-					list = db.getArticlesFromLastUpdate(lastUpdate, user.getId());
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Date lastUpdate = new Date(Long.parseLong(param));
+				list = db.getArticlesFromLastUpdate(lastUpdate, user.getId());
 			}
 			else
 			{
