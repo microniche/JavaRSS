@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Logout" />
+    </group>
+
+    <item android:title="RSS Feed Management">
+        <menu>
+            <item
+                android:id="@+id/nav_articles_list"
+                android:icon="@drawable/ic_articles_list"
+                android:title="Articles List" />
+            <item
+                android:id="@+id/nav_manage_feed"
+                android:icon="@drawable/ic_manage_feed"
+                android:title="Manage Feed" />
+        </menu>
+    </item>
+
+</menu>

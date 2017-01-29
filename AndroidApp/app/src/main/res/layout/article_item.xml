@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="avm"
+            type="com.example.javarss.ArticleViewModel" />
+    </data>
+    <android.support.v7.widget.CardView
+        android:id="@+id/article_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="4dp"
+        android:clickable="true" >
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:onClick="@{avm.OpenDetails()}" >
+
+            <ImageView
+                android:id="@+id/article_item_image"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                card_view:layout_constraintLeft_toLeftOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:srcCompat="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/article_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@{avm.title}"
+                card_view:layout_constraintLeft_toRightOf="@+id/article_item_image"
+                card_view:layout_constraintTop_toTopOf="@+id/article_item_image" />
+
+            <TextView
+                android:id="@+id/article_item_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@{avm.date}"
+                card_view:layout_constraintLeft_toRightOf="@+id/article_item_image"
+                card_view:layout_constraintTop_toBottomOf="@+id/article_item_title" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</layout>
