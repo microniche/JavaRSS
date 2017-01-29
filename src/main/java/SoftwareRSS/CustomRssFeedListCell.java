@@ -1,5 +1,6 @@
 package SoftwareRSS;
 
+import com.JavaRSS.Beans.Feed;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ContextMenu;
@@ -13,12 +14,16 @@ import java.io.IOException;
 /**
  * Created by Aurélien on 10/01/2017.
  */
-public class CustomRssFeedListCell extends ListCell<RssFeed> {
+public class CustomRssFeedListCell extends ListCell<Feed> {
     @FXML
     private Label titleLabel;
 
     @FXML
     private ImageView iconView;
+
+    static private final String rssUrl = "http://localhost:8080/ServeurJavaRSS/feeds";
+
+    private Feed feed = null;
 
     public CustomRssFeedListCell()
     {
@@ -38,24 +43,29 @@ public class CustomRssFeedListCell extends ListCell<RssFeed> {
         }
     }
 
-    private void removeFeed(RssFeed feed)
+    @FXML
+    private void removeFeed(Feed feed)
     {
         //inform API to remove the feed
-        Main.mainController.removeOneFeed(feed);
+        if (feed != null) {
+            HttpHandler.sendDelete(rssUrl, "feed_id", String.valueOf(feed.getId()));
+            Main.mainController.removeOneFeed(feed);
+        }
     }
 
     @Override
-    public void updateItem(RssFeed item, boolean empty)
+    public void updateItem(Feed item, boolean empty)
     {
         super.updateItem(item, empty);
         if (!empty && item != null)
         {
-            iconView.setImage(item.getIcon());
+            iconView.setImage(Utils.readIcoFile(Utils.cutUrl(item.getLink()) + "/favicon.ico"));
             MenuItem menuItem = new MenuItem("Remove this feed");
             menuItem.setOnAction(event -> removeFeed(item));
             setContextMenu(new ContextMenu(menuItem));
             System.out.println("not empty cell updated");
             titleLabel.setText(item.getTitle());
+            feed = item;
         }
         else
         {
@@ -63,6 +73,7 @@ public class CustomRssFeedListCell extends ListCell<RssFeed> {
             setContextMenu(null);
             iconView.setImage(null);
             titleLabel.setText(null);
+            feed = null;
         }
     }
 }

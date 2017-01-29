@@ -1,6 +1,8 @@
 package SoftwareRSS;
 
 
+import com.JavaRSS.Beans.Article;
+import com.JavaRSS.Beans.Feed;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -9,9 +11,12 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
+import java.beans.XMLDecoder;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * Created by Aurélien on 11/01/2017.
@@ -79,5 +84,17 @@ public class Utils {
         dialog.setHeaderText("Oops");
         dialog.setTitle("Rss infos");
         dialog.show();
+    }
+    static public List<Feed> deserializeFeedsList(InputStream stream)
+    {
+        XMLDecoder decoder = new XMLDecoder(stream);
+        decoder.close();
+        return ((List<Feed>)decoder.readObject());
+    }
+    static public List<Article> deserializeArticlesList(InputStream stream)
+    {
+        XMLDecoder decoder = new XMLDecoder(stream);
+        decoder.close();
+        return ((List<Article>)decoder.readObject());
     }
 }

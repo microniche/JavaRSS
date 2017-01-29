@@ -1,5 +1,7 @@
 package SoftwareRSS;
 
+import com.JavaRSS.Beans.Article;
+import com.JavaRSS.Beans.Feed;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Aurélien on 08/01/2017.
@@ -32,10 +35,11 @@ public class MainController
 
     private VBox layout = null;
 
-    private ObservableList rssList = null;
+    private ObservableList<Feed> feedList = null;
 
     static private final String rssUrl = "http://localhost:8080/ServeurJavaRSS/feeds";
     static private final String articleUrl = "http://localhost:8080/ServeurJavaRSS/articles";
+    static private final String articleReadUrl = "http://localhost:8080/ServeurJavaRSS/articleread";
 
     public MainController()
     {
@@ -52,7 +56,7 @@ public class MainController
                     return new CustomArticleListCell();
                 }
             });
-            rssFeedsView.setCellFactory(new Callback<ListView<RssFeed>, ListCell>() {
+            rssFeedsView.setCellFactory(new Callback<ListView<Feed>, ListCell>() {
                 @Override
                 public ListCell call(ListView param) {
                     return new CustomRssFeedListCell();
@@ -67,34 +71,26 @@ public class MainController
 
     public void updateArticles()
     {
-        Article[] articleArray = new Article[]
-                {
-                    new Article("titre nul", "description boaf", "link foireux"),
-                        new Article("titre moyen", "description nulle", "link moisi"),
-                        new Article("titre trop cool", "description amazing", "link qui pue"),
-                        new Article("gegzeg", "description amabfdsbzing", "link quidfbsbsdb pue"),
-                        new Article("gsdgbdfhdfhfd", "description amfsdbsazing", "link qusbdbfsi pue"),
-                        new Article("bfdsbbsdb", "description amazibfdbbsbbfng", "link qudfsbsdbi pue")
-                };
-        ObservableList testList = FXCollections.observableArrayList(articleArray);
+        List<Article> articles = Utils.deserializeArticlesList(HttpHandler.sendGetInputVersion(articleUrl));
+        System.out.println("display: " + articles.size());
+        ObservableList testList = FXCollections.observableArrayList(articles);
         articlesView.setItems(testList);
     }
 
     public void updateRssFeeds()
     {
-        RssFeed[] testRssFeedsArray = new RssFeed[]
-                {
-                    new RssFeed("Flux toutes les actualités - 01net", "http://www.01net.com/rss/info/flux-rss/flux-toutes-les-actualites/"),
-                        new RssFeed("Le Monde.fr - Actualités et Infos en France et dans le monde", "http://www.lemonde.fr/rss/une.xml"),
-                        new RssFeed("Liberation - A la une sur Libération", "http://rss.liberation.fr/rss/latest/")
-                };
-        rssList = FXCollections.observableArrayList(testRssFeedsArray);
-        rssFeedsView.setItems(rssList);
+        //System.out.print(HttpHandler.sendGet(rssUrl));
+        List<Feed> feeds = Utils.deserializeFeedsList(HttpHandler.sendGetInputVersion(rssUrl));
+        System.out.println("display: " + feeds.size());
+        for (Feed feed : feeds)
+            System.out.println(feed.getTitle());
+        feedList = FXCollections.observableArrayList(feeds);
+        rssFeedsView.setItems(feedList);
     }
 
-    public void removeOneFeed(RssFeed feed)
+    public void removeOneFeed(Feed feed)
     {
-        rssList.remove(feed);
+        feedList.remove(feed);
     }
 
     @FXML
@@ -116,6 +112,11 @@ public class MainController
         logButton.setText(buttonText);
     }
 
+    public ObservableList<Feed> getFeedList()
+    {
+        return (feedList);
+    }
+
     @FXML
     private void addRss()
     {
@@ -129,7 +130,9 @@ public class MainController
     @FXML
     private void getArticles()
     {
-        Utils.inform(HttpHandler.sendGet(articleUrl));
+        String ret = HttpHandler.sendGet(articleUrl);
+        Utils.inform(ret);
+        System.out.println(ret);
     }
     public VBox getLayout()
     {
