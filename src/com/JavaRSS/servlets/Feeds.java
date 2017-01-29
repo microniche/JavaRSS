@@ -78,7 +78,6 @@ public class Feeds extends HttpServlet
 				e.printStackTrace();
 			}
 			
-
 		}
 		else
 		{
@@ -95,8 +94,10 @@ public class Feeds extends HttpServlet
 		{
 			int feed_id = Integer.parseInt(request.getParameter("feed_id"));
 			DatabaseRequester dbr = new DatabaseRequester();
+			dbr.connect();
 			dbr.deleteFeed(request, feed_id);
-			
+			dbr.deleteArticlesFromFeed(user.getId(), feed_id);
+			dbr.disconnect();
 		}
 		else
 		{

@@ -374,22 +374,34 @@ public List<String> addFeed(HttpServletRequest request, String url, String title
 
 	public List<String> deleteFeed(HttpServletRequest request, int feed_id)
 	{
-		this.connect();
-
 		try
 		{
 			statement = connexion.createStatement();
 			int statut = statement.executeUpdate("Delete From feeds where id=" + feed_id + ";");
 			statement.close();
 			statement = null;
-			this.disconnect();
 		} catch (SQLException ignore)
 		{
 			ignore.printStackTrace();
 		}
-
 		return messages;
-	}	
+	}
+	
+	public void deleteArticlesFromFeed(int owner_id, int feed_id)
+	{
+		try
+		{
+			PreparedStatement statement = connexion.prepareStatement("DELETE FROM article WHERE rss_id = ? AND user_id = ?");
+			statement.setInt(1, feed_id);
+			statement.setInt(2, owner_id);
+			statement.executeUpdate();
+			statement.close();
+			statement = null;
+		} catch (SQLException ignore)
+		{
+			ignore.printStackTrace();
+		}
+	}
 	
 	public List<Feed> getFeeds(int ownerUser)
 	{
@@ -502,5 +514,19 @@ public List<String> addFeed(HttpServletRequest request, String url, String title
 		}
 		//System.out.println("addArticle: generated Id: " + id);
 		return (0);
+	}
+	public void setRead(int article_id, int user_id)
+	{
+		try
+		{
+			PreparedStatement statement = connexion.prepareStatement("UPDATE article SET isRead = true WHERE id = ? AND user_id = ?;");
+			statement.setInt(1, article_id);
+			statement.setInt(2, user_id);
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
