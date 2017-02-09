@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app 
+  xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0">
+<servlet>
+	<servlet-name>Index</servlet-name>
+	<servlet-class>com.JavaRSS.servlets.Index</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>Index</servlet-name>
+	<url-pattern>/index</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>Articles</servlet-name>
+	<servlet-class>com.JavaRSS.servlets.Articles</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>Articles</servlet-name>
+	<url-pattern>/articles</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>Feeds</servlet-name>
+	<servlet-class>com.JavaRSS.servlets.Feeds</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>Feeds</servlet-name>
+	<url-pattern>/feeds</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>Login</servlet-name>
+	<servlet-class>com.JavaRSS.servlets.Login</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>Login</servlet-name>
+	<url-pattern>/login</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>Logout</servlet-name>
+	<servlet-class>com.JavaRSS.servlets.Logout</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>Logout</servlet-name>
+	<url-pattern>/logout</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>Register</servlet-name>
+	<servlet-class>com.JavaRSS.servlets.Register</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>Register</servlet-name>
+	<url-pattern>/register</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>CheckLogged</servlet-name>
+	<servlet-class>com.JavaRSS.servlets.CheckLogged</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>CheckLogged</servlet-name>
+	<url-pattern>/check</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>ArticleRead</servlet-name>
+	<servlet-class>com.JavaRSS.servlets.ArticleRead</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>ArticleRead</servlet-name>
+	<url-pattern>/articleread</url-pattern>
+</servlet-mapping>
+</web-app>
